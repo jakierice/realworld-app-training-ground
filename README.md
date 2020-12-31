@@ -76,7 +76,13 @@ This will start the development server. It should automatically open the running
 React app in your default browser, but if it does you can manually open
 [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### Using the hosted API
+
+
+<!-- 
+Changed the heading type of the Using API area to make it more obvious for people to find it when scrolling -->
+<br>
+
+# Using the hosted API
 
 This project's [API requests](https://github.com/gothinkster/realworld/tree/master/api) use the publicly available RealWorld App API at `https://conduit.productionready.io/api`.
 
