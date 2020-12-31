@@ -1,65 +1,47 @@
 import React from 'react'
 
 import { getArticles } from './api-client'
-
-const possibleRequestStates = {
-  IDLE: 'idle',
-  PENDING: 'pending',
-  SUCCESS: 'success',
-  FAILURE: 'failure',
-}
+import { useRequest } from './useRequest'
 
 export function ArticleList() {
-  const [requestState, setRequestState] = React.useState(
-    possibleRequestStates.IDLE,
-  )
-  const [articles, setArticles] = React.useState([])
-
-  React.useEffect(() => {
-    setRequestState(possibleRequestStates.PENDING)
-
-    getArticles()
-      .then(setArticles)
-      .then(() => void setRequestState(possibleRequestStates.SUCCESS))
-      .catch(() => setRequestState(possibleRequestStates.FAILURE))
-  }, [])
+  const request = React.useCallback(() => getArticles(), [])
+  const matchRequestState = useRequest(request)
 
   return (
     <>
-      {requestState === possibleRequestStates.PENDING && (
-        <span>Loading...</span>
-      )}
-
-      {requestState === possibleRequestStates.FAILURE && (
-        <span>Sorry, your articles could not be loaded at this time.</span>
-      )}
-
-      {requestState === possibleRequestStates.SUCCESS &&
-        articles.map((article) => {
-          return (
-            <div className="article-preview">
-              <div className="article-meta">
-                <a href="profile.html">
-                  <img src={article.author.image} />
-                </a>
-                <div className="info">
-                  <a href="" className="author">
-                    {article.author.username}
+      {matchRequestState({
+        idle: () => <span>Loading...</span>,
+        pending: () => <span>Loading...</span>,
+        failure: () => (
+          <span>Sorry, the articles could not be loaded at this time.</span>
+        ),
+        success: (articles) =>
+          articles.map((article) => {
+            return (
+              <div className="article-preview">
+                <div className="article-meta">
+                  <a href="profile.html">
+                    <img src={article.author.image} />
                   </a>
-                  <span className="date">{article.createdAt}</span>
+                  <div className="info">
+                    <a href="" className="author">
+                      {article.author.username}
+                    </a>
+                    <span className="date">{article.createdAt}</span>
+                  </div>
+                  <button className="btn btn-outline-primary btn-sm pull-xs-right">
+                    <i className="ion-heart"></i> {article.favoritesCount}
+                  </button>
                 </div>
-                <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                  <i className="ion-heart"></i> {article.favoritesCount}
-                </button>
+                <a href="" className="preview-link">
+                  <h1>{article.title}</h1>
+                  <p>{article.description}</p>
+                  <span>Read more...</span>
+                </a>
               </div>
-              <a href="" className="preview-link">
-                <h1>{article.title}</h1>
-                <p>{article.description}</p>
-                <span>Read more...</span>
-              </a>
-            </div>
-          )
-        })}
+            )
+          }),
+      })}
     </>
   )
 }
