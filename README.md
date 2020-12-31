@@ -79,10 +79,10 @@ React app in your default browser, but if it does you can manually open
 
 
 <!-- 
-Changed the heading type of the Using API area to make it more obvious for people to find it when scrolling -->
+Changed the font style to bold to make the Usage area pop a little bit more-->
 <br>
 
-# Using the hosted API
+### **Using the hosted API**
 
 This project's [API requests](https://github.com/gothinkster/realworld/tree/master/api) use the publicly available RealWorld App API at `https://conduit.productionready.io/api`.
 
