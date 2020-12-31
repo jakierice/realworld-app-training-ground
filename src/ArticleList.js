@@ -1,5 +1,6 @@
 import React from 'react'
-import axios from 'axios'
+
+import { getArticles } from './api-client'
 
 const possibleRequestStates = {
   IDLE: 'idle',
@@ -17,16 +18,10 @@ export function ArticleList() {
   React.useEffect(() => {
     setRequestState(possibleRequestStates.PENDING)
 
-    axios
-      .get('https://conduit.productionready.io/api/articles?limit=10')
-      .then((response) => {
-        setRequestState(possibleRequestStates.SUCCESS)
-        setArticles(response.data.articles)
-      })
-      .catch((error) => {
-        setRequestState(possibleRequestStates.FAILURE)
-        console.error(error)
-      })
+    getArticles()
+      .then(setArticles)
+      .then(() => void setRequestState(possibleRequestStates.SUCCESS))
+      .catch(() => setRequestState(possibleRequestStates.FAILURE))
   }, [])
 
   return (
