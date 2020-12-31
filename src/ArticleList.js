@@ -46,7 +46,7 @@ export function ArticleList() {
                   <a href="" className="author">
                     {article.author.username}
                   </a>
-                  <span className="date">January 20th</span>
+                  <span className="date">{article.createdAt}</span>
                 </div>
                 <button className="btn btn-outline-primary btn-sm pull-xs-right">
                   <i className="ion-heart"></i> {article.favoritesCount}
