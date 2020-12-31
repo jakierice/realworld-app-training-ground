@@ -4,7 +4,7 @@ const jwt = window.localStorage.getItem('jwt')
 
 const client = axios.create({
   // baseURL: "https://conduit.productionready.io/api",
-  baseURL: 'http://localhost:5100/api',
+  baseURL: "http://localhost:5100/api",
   headers: jwt
     ? {
         Authorization: 'Token ' + jwt,
@@ -32,4 +32,12 @@ export const getArticles = () => client
   .then((response) => response.data.articles)
 
 export const getTags = () =>
-  client.get('/tags').then((response) => response.data.tags)
+  client.get("/tags").then((response) => response.data.tags);
+
+export const createArticle = (article) =>
+  client
+    .post("/articles", { article })
+    .then((response) => response.data.articles);
+
+export const editArticle = (newArticleDetails, slug) =>
+  client.post(`/articles/${slug}`, { newArticleDetails });
