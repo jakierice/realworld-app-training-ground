@@ -1,7 +1,7 @@
 import { ArticleList } from './ArticleList'
 import { TagList } from './TagList'
 
-export function HomePage() {
+export const HomePage = () => {
   return (
     <>
       <div className="home-page">

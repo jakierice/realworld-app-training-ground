@@ -3,8 +3,30 @@ import { Link } from 'react-router-dom'
 
 import { getTags } from './api-client'
 import { useRequest } from './useRequest'
+import {
+  isEveryCharacterZeroWidthNonJoiner,
+  renderMaybeEmptyList,
+} from './helpers'
 
-export function TagList() {
+import { BlockLoadingIndicator } from './ui-components'
+
+const Tag = (tag) => (
+  <Link to={`/?tag=${tag}`} className="tag-pill tag-default" key={tag}>
+    {tag}
+  </Link>
+)
+
+const renderTags = (tags) =>
+  tags.filter(isEveryCharacterZeroWidthNonJoiner).map(Tag)
+
+const NoTagsMessage = () => (
+  <span>
+    None of the articles have tags. You can tag an article during creation or
+    editing!
+  </span>
+)
+
+export const TagList = () => {
   const request = React.useCallback(() => getTags(), [])
   const matchRequestState = useRequest(request)
 
@@ -13,19 +35,10 @@ export function TagList() {
       <p>Popular Tags</p>
       <div className="tag-list">
         {matchRequestState({
-          idle: () => <></>,
-          pending: () => <span>Loading...</span>,
+          idle: BlockLoadingIndicator,
+          pending: BlockLoadingIndicator,
           failure: () => <span>Could not load tags.</span>,
-          success: (tags) =>
-            tags
-              .filter((tag) =>
-                tag.split().every((c) => c.charCodeAt(0) !== 8204),
-              )
-              .map((tag) => (
-                <Link to={`/?tag=${tag}`} className="tag-pill tag-default">
-                  {tag}
-                </Link>
-              )),
+          success: renderMaybeEmptyList(NoTagsMessage, renderTags),
         })}
       </div>
     </>
