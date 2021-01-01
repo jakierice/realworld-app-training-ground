@@ -1,10 +1,12 @@
 import React from 'react'
 
 import { getArticles } from './api-client'
+import { useQueryParams } from './useQueryParams'
 import { useRequest } from './useRequest'
 
 export function ArticleList() {
-  const request = React.useCallback(() => getArticles(), [])
+  const tag = useQueryParams().get('tag')
+  const request = React.useCallback(() => getArticles({ tag }), [tag])
   const matchRequestState = useRequest(request)
 
   return (
