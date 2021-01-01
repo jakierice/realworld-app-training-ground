@@ -9,9 +9,9 @@ export function AppHeader() {
   return (
     <nav className="navbar navbar-light">
       <div className="container">
-        <a href="/" className="navbar-brand">
+        <Link to="/" className="navbar-brand">
           conduit
-        </a>
+        </Link>
         {user ? (
           <ul className="nav navbar-nav pull-xs-right">
             <li className="nav-item">
