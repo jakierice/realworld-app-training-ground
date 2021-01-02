@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { getTags } from './api-client'
 import { useRequest } from './useRequest'
@@ -10,14 +10,21 @@ import {
 
 import { BlockLoadingIndicator } from './ui-components'
 
-const Tag = (tag) => (
-  <Link to={`/?tag=${tag}`} className="tag-pill tag-default" key={tag}>
+const Tag = ({ tag, linkBasePath }) => (
+  <Link
+    to={`${linkBasePath}?tag=${tag}`}
+    className="tag-pill tag-default"
+    key={tag}
+  >
     {tag}
   </Link>
 )
 
-const renderTags = (tags) =>
-  tags.filter(isEveryCharacterZeroWidthNonJoiner).map(Tag)
+const renderTags = (linkBasePath) => (tags) =>
+  tags
+    .filter(isEveryCharacterZeroWidthNonJoiner)
+    .map((tag) => ({ tag, linkBasePath }))
+    .map(Tag)
 
 const NoTagsMessage = () => (
   <span>
@@ -27,6 +34,7 @@ const NoTagsMessage = () => (
 )
 
 export const TagList = () => {
+  const location = useLocation()
   const request = React.useCallback(() => getTags(), [])
   const matchRequestState = useRequest(request)
 
@@ -38,7 +46,10 @@ export const TagList = () => {
           idle: BlockLoadingIndicator,
           pending: BlockLoadingIndicator,
           failure: () => <span>Could not load tags.</span>,
-          success: renderMaybeEmptyList(NoTagsMessage, renderTags),
+          success: renderMaybeEmptyList(
+            NoTagsMessage,
+            renderTags(location.pathname),
+          ),
         })}
       </div>
     </>

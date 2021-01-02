@@ -1,4 +1,5 @@
 import './ui-components.css'
+import { useParams, Link } from 'react-router-dom'
 
 export const LoadingIndicator = (props) => {
   return (
@@ -64,4 +65,19 @@ export const BlockLoadingIndicator = () => (
   <div className="BlockLoadingIndicator">
     <LoadingIndicator />
   </div>
+)
+
+export const Tab = ({ key, linkTo, title }) => {
+  const { tab } = useParams()
+  return (
+    <li className="nav-item" key={key}>
+      <Link to={linkTo} className={`nav-link ${tab === key ? 'active' : ''}`}>
+        {title}
+      </Link>
+    </li>
+  )
+}
+
+export const Tabs = ({ children }) => (
+  <ul className="nav nav-pills outline-active">{children}</ul>
 )

@@ -8,6 +8,8 @@ export const isEveryCharacterZeroWidthNonJoiner = (word) =>
 
 export const isEmptyArray = a => a.length === 0
 
+export const matchString = (str) => (matchers) => matchers[str]()
+
 /** 
  * Render helpers
  */

@@ -32,7 +32,12 @@ export const loginUser = (credentials) =>
   })
 
 export const getArticles = (params) =>
-  client.get('/articles', params).then((response) => response.data.articles)
+  client.get('/articles', { params }).then((response) => response.data.articles)
+
+export const getArticleFeed = (params) =>
+  client
+    .get('/articles/feed', { params: { ...params, limit: 10 } })
+    .then((response) => response.data.articles)
 
 export const getTags = () =>
   client.get('/tags').then((response) => response.data.tags)
