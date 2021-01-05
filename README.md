@@ -77,9 +77,6 @@ React app in your default browser, but if it does you can manually open
 [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 
-
-<!-- 
-Changed the font style to bold to make the Usage area pop a little bit more-->
 <br>
 
 ### **Using the hosted API**
